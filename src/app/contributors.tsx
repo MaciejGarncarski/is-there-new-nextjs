@@ -2,30 +2,29 @@ import Image from "next/image";
 
 export function Contributors({ contributors }: { contributors: string[] }) {
   return (
-    <div className="mt-4">
-      <h3 className="font-bold">Contributors:</h3>
-      <ul className="list-disc list-inside">
+    <div className="mt-4 flex flex-wrap items-center gap-4">
+      <h3 className="font-semibold flex-shrink-0">Contributors:</h3>
+      <ul className="flex flex-wrap gap-2">
         {contributors.map((contributor) => {
           const contributorGithubPage = `https://github.com/${contributor.slice(
             1
           )}`;
 
           return (
-            <li key={contributor}>
+            <li key={contributor} className="shrink-0">
               <a
                 href={contributorGithubPage}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600"
+                title={contributor}
               >
                 <Image
                   src={`https://github.com/${contributor.slice(1)}.png`}
                   alt={contributor}
-                  width={35}
-                  height={35}
-                  className="rounded-full inline-block mr-1"
+                  width={28}
+                  height={28}
+                  className="rounded-full border border-stone-600/70"
                 />
-                {contributor}
               </a>
             </li>
           );

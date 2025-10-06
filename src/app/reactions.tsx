@@ -2,16 +2,19 @@ import { Reactions as TReaction } from "@/app/types";
 
 export function Reactions({ reactions }: { reactions: TReaction }) {
   return (
-    <div>
-      <h3 className="font-bold mt-4">Reactions:</h3>
-      <ul className="flex gap-4 mt-2">
+    <div className="flex gap-4 items-center">
+      <h3 className="font-semibold">Reactions:</h3>
+      <ul className="flex gap-4 flex-wrap">
         {Object.entries(reactions)
           .filter(
             ([key, value]) =>
               key !== "url" && key !== "total_count" && value > 0
           )
           .map(([key, value]) => (
-            <li key={key} className="flex items-center gap-1">
+            <li
+              key={key}
+              className="flex items-center gap-1 px-2 py-0.5 bg-stone-700 rounded-xl"
+            >
               <span>
                 {key === "+1"
                   ? "👍"
