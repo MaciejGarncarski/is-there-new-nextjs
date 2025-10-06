@@ -1,4 +1,4 @@
-import { Root } from "@/app/types";
+import { Release } from "@/app/types";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { parseContributors } from "@/app/parse-contributors.utils";
 import { Contributors } from "@/app/contributors";
@@ -16,11 +16,12 @@ export const metadata = {
 export default async function Home() {
   "use cache";
   cacheLife("minutes");
-  const repoData: Root[] = await fetch(
+
+  const releases: Release[] = await fetch(
     "https://api.github.com/repos/vercel/next.js/releases"
   ).then((res) => res.json());
 
-  const latestRelease: Root = await fetch(
+  const latestRelease: Release = await fetch(
     "https://api.github.com/repos/vercel/next.js/releases/latest"
   ).then((res) => res.json());
 
@@ -39,7 +40,7 @@ export default async function Home() {
           All releases
         </a>
         <ul className="flex flex-col gap-10">
-          {repoData.map((release) => {
+          {releases.map((release) => {
             const contributors = parseContributors(release.body);
             const parsedBody = release.body.replace(
               /#(\d+)/g,

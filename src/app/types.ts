@@ -1,4 +1,4 @@
-export interface Root {
+export interface Release {
   url: string;
   assets_url: string;
   upload_url: string;
