@@ -8,9 +8,9 @@ import { Reactions } from "@/app/reactions";
 export default async function Home() {
   "use cache";
   cacheLife("minutes");
-  const repoData: Root[] = await fetch(process.env.API_URL).then((res) =>
-    res.json()
-  );
+  const repoData: Root[] = await fetch(
+    "https://api.github.com/repos/vercel/next.js/releases"
+  ).then((res) => res.json());
 
   console.log(repoData[0].tag_name);
 
