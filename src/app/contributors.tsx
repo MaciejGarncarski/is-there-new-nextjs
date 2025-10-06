@@ -20,9 +20,9 @@ export function Contributors({ contributors }: { contributors: string[] }) {
               >
                 <Image
                   src={`https://github.com/${contributor.slice(1)}.png`}
-                  alt={contributor}
                   width={28}
                   height={28}
+                  alt={`Avatar of ${contributor}`}
                   className="rounded-full border border-stone-600/70"
                 />
               </a>

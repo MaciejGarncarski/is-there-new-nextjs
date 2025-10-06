@@ -34,7 +34,7 @@ export default async function Home() {
           href="https://github.com/vercel/next.js/releases"
           target="_blank"
           rel="noopener noreferrer"
-          className="block text-blue-600"
+          className="block text-blue-500"
         >
           All releases
         </a>
@@ -50,76 +50,84 @@ export default async function Home() {
             return (
               <li
                 key={release.id}
-                className="border-b border-zinc-300/40 pb-10 flex flex-col gap-4"
+                className="border-b border-zinc-300/40 pb-10 "
               >
-                <header className="flex">
-                  <a
-                    href={release.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <h2 className="text-2xl font-bold">{release.name}</h2>
-                  </a>
-                  {release.prerelease && (
-                    <span className="ml-4 self-center bg-yellow-600/10 text-yellow-600 border border-yellow-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                      Pre-release
-                    </span>
+                <article className="flex flex-col gap-4">
+                  <header className="flex">
+                    <a
+                      href={release.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View Next.js release ${release.name} on GitHub`}
+                    >
+                      <h2 className="text-2xl font-bold">{release.name}</h2>
+                    </a>
+                    {release.prerelease && (
+                      <span className="ml-4 self-center bg-yellow-600/10 text-yellow-600 border border-yellow-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        Pre-release
+                      </span>
+                    )}
+                    {isLatest && (
+                      <span className="ml-4 self-center bg-green-600/10 text-green-600 border border-green-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        Latest
+                      </span>
+                    )}
+                  </header>
+                  <p className="text-sm text-zinc-500">
+                    Published at:{" "}
+                    <time dateTime={release.published_at}>
+                      {new Date(release.published_at).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
+                    </time>
+                  </p>
+                  <div className="prose-invert prose-base py-2 prose-ul:list-disc">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                      components={{
+                        h1: ({ ...props }) => (
+                          <h1 className="text-4xl font-bold" {...props} />
+                        ),
+                        a: ({ ...props }) => (
+                          <a
+                            className="text-blue-500 hover:underline"
+                            target="_blank"
+                            {...props}
+                          />
+                        ),
+                        li: ({ ...props }) => (
+                          <li className="break-words" {...props} />
+                        ),
+                        code: ({ ...props }) => (
+                          <code
+                            className="bg-zinc-400/40 rounded px-1 font-mono"
+                            {...props}
+                          />
+                        ),
+                        pre: ({ ...props }) => (
+                          <pre
+                            className="bg-zinc-900 text-zinc-100 rounded-lg p-4 overflow-x-auto"
+                            {...props}
+                          />
+                        ),
+                      }}
+                    >
+                      {parsedBody}
+                    </ReactMarkdown>
+                  </div>
+                  {contributors && contributors.length > 0 && (
+                    <Contributors contributors={contributors} />
                   )}
-                  {isLatest && (
-                    <span className="ml-4 self-center bg-green-600/10 text-green-600 border border-green-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                      Latest
-                    </span>
+                  {release?.reactions?.total_count > 0 && (
+                    <Reactions reactions={release.reactions} />
                   )}
-                </header>
-                <p className="text-sm text-zinc-500">
-                  Published at:{" "}
-                  {new Date(release.published_at).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-                <article className="prose-invert prose-base py-2 prose-ul:list-disc">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw, rehypeHighlight]}
-                    components={{
-                      h1: ({ ...props }) => (
-                        <h1 className="text-4xl font-bold" {...props} />
-                      ),
-                      a: ({ ...props }) => (
-                        <a
-                          className="text-blue-700 hover:underline"
-                          target="_blank"
-                          {...props}
-                        />
-                      ),
-                      li: ({ ...props }) => (
-                        <li className="break-words" {...props} />
-                      ),
-                      code: ({ ...props }) => (
-                        <code
-                          className="bg-zinc-400/40 rounded px-1 font-mono"
-                          {...props}
-                        />
-                      ),
-                      pre: ({ ...props }) => (
-                        <pre
-                          className="bg-zinc-900 text-zinc-100 rounded-lg p-4 overflow-x-auto"
-                          {...props}
-                        />
-                      ),
-                    }}
-                  >
-                    {parsedBody}
-                  </ReactMarkdown>
                 </article>
-                {contributors && contributors.length > 0 && (
-                  <Contributors contributors={contributors} />
-                )}
-                {release?.reactions?.total_count > 0 && (
-                  <Reactions reactions={release.reactions} />
-                )}
               </li>
             );
           })}
