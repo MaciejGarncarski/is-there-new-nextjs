@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: true,
     cacheComponents: true,
+    routerBFCache: true,
   },
   images: {
     remotePatterns: [

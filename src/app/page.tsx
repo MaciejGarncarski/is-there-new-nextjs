@@ -17,13 +17,14 @@ export default async function Home() {
   "use cache";
   cacheLife("minutes");
 
-  const releases: Release[] = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases"
-  ).then((res) => res.json());
-
-  const latestRelease: Release = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases/latest"
-  ).then((res) => res.json());
+  const [releases, latestRelease]: [Release[], Release] = await Promise.all([
+    fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
+      res.json()
+    ),
+    fetch("https://api.github.com/repos/vercel/next.js/releases/latest").then(
+      (res) => res.json()
+    ),
+  ]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black p-6">
