@@ -12,13 +12,13 @@ export default async function Home() {
     "https://api.github.com/repos/vercel/next.js/releases"
   ).then((res) => res.json());
 
-  console.log(repoData[0].tag_name);
+  const currRandom = Math.random();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black p-6">
       <main className="flex w-full flex-col gap-10 max-w-prose mx-auto">
         <h1 className="text-2xl font-bold text-center">
-          Unofficial Next.js releases tracker.
+          Unofficial Next.js releases tracker. {currRandom}
         </h1>
         <a
           href="https://github.com/vercel/next.js/releases"
