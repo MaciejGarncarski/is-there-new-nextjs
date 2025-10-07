@@ -9,7 +9,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
-import { formatRelativeTime } from "@/app/format-date.utils";
+import { TimeRelativeClient } from "@/app/time-relative-client";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Is there new Next.js?",
@@ -79,9 +80,11 @@ export default async function Home() {
                     )}
                   </header>
                   <div className="flex flex-col gap-1">
-                    <p className="text-sm">
-                      {formatRelativeTime(new Date(release.published_at))}
-                    </p>
+                    <Suspense fallback={<p className="text-sm">Loading...</p>}>
+                      <TimeRelativeClient
+                        date={new Date(release.published_at)}
+                      />
+                    </Suspense>
                     <p className="text-sm text-zinc-500">
                       Published at:{" "}
                       <time dateTime={release.published_at}>
