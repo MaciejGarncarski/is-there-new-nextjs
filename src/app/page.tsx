@@ -1,3 +1,5 @@
+"use cache";
+
 import { Release } from "@/app/types";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { parseContributors } from "@/app/parse-contributors.utils";
@@ -7,6 +9,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
+import { formatRelativeTime } from "@/app/format-date.utils";
 
 export const metadata = {
   title: "Is there new Next.js?",
@@ -14,17 +17,17 @@ export const metadata = {
 };
 
 export default async function Home() {
-  "use cache";
   cacheLife("minutes");
 
-  const [releases, latestRelease]: [Release[], Release] = await Promise.all([
-    fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
-      res.json()
-    ),
-    fetch("https://api.github.com/repos/vercel/next.js/releases/latest").then(
-      (res) => res.json()
-    ),
-  ]);
+  const releases: Release[] = await fetch(
+    "https://api.github.com/repos/vercel/next.js/releases",
+    { next: { revalidate: 60 } }
+  ).then((res) => res.json());
+
+  const latestRelease: Release = await fetch(
+    "https://api.github.com/repos/vercel/next.js/releases/latest",
+    { next: { revalidate: 60 } }
+  ).then((res) => res.json());
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black p-6">
@@ -75,19 +78,24 @@ export default async function Home() {
                       </span>
                     )}
                   </header>
-                  <p className="text-sm text-zinc-500">
-                    Published at:{" "}
-                    <time dateTime={release.published_at}>
-                      {new Date(release.published_at).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </time>
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm">
+                      {formatRelativeTime(new Date(release.published_at))}
+                    </p>
+                    <p className="text-sm text-zinc-500">
+                      Published at:{" "}
+                      <time dateTime={release.published_at}>
+                        {new Date(release.published_at).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </time>
+                    </p>
+                  </div>
                   <div className="prose-invert prose-base py-2 prose-ul:list-disc">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
