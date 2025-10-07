@@ -18,6 +18,3 @@ export function formatRelativeTime(date: Date) {
     return rtf.format(diffDay, "day");
   }
 }
-
-const pastDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
-console.log(formatRelativeTime(pastDate));
