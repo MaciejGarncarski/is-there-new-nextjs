@@ -21,13 +21,11 @@ export default async function Home() {
   cacheLife("minutes");
 
   const releases: Release[] = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases",
-    { next: { revalidate: 60 } }
+    "https://api.github.com/repos/vercel/next.js/releases"
   ).then((res) => res.json());
 
   const latestRelease: Release = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases/latest",
-    { next: { revalidate: 60 } }
+    "https://api.github.com/repos/vercel/next.js/releases/latest"
   ).then((res) => res.json());
 
   return (
