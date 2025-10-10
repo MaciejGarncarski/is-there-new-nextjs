@@ -18,15 +18,20 @@ export const metadata = {
 };
 
 export default async function Home() {
-  cacheLife("seconds");
+  cacheLife({
+    expire: 60 * 5, // 5 minutes
+    revalidate: 60 * 2, // 2 minutes
+    stale: 60 * 5, // 5 minutes
+  });
 
-  const releases: Release[] = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases"
-  ).then((res) => res.json());
-
-  const latestRelease: Release = await fetch(
-    "https://api.github.com/repos/vercel/next.js/releases/latest"
-  ).then((res) => res.json());
+  const [releases, latestRelease]: [Release[], Release] = await Promise.all([
+    fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
+      res.json()
+    ),
+    fetch("https://api.github.com/repos/vercel/next.js/releases/latest").then(
+      (res) => res.json()
+    ),
+  ]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black p-6">
