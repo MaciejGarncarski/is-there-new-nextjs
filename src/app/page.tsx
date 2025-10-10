@@ -18,7 +18,7 @@ export const metadata = {
 };
 
 export default async function Home() {
-  cacheLife("minutes");
+  cacheLife("seconds");
 
   const releases: Release[] = await fetch(
     "https://api.github.com/repos/vercel/next.js/releases"
