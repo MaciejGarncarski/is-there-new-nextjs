@@ -11,12 +11,12 @@ import remarkGfm from "remark-gfm";
 
 export const ReleaseList = async () => {
   const [releases, latestRelease]: [Release[], Release] = await Promise.all([
-    fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
-      res.json()
-    ),
-    fetch("https://api.github.com/repos/vercel/next.js/releases/latest").then(
-      (res) => res.json()
-    ),
+    fetch("https://api.github.com/repos/vercel/next.js/releases", {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+    fetch("https://api.github.com/repos/vercel/next.js/releases/latest", {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
   ]);
 
   return (
