@@ -13,7 +13,7 @@ export function Reactions({ reactions }: { reactions: TReaction }) {
           .map(([key, value]) => (
             <li
               key={key}
-              className="flex items-center gap-1 px-2 py-0.5 dark:bg-gray-700 bg-gray-300 rounded-xl"
+              className="flex items-center gap-1 px-2 py-0.5 dark:bg-gray-800 bg-gray-300 rounded-xl"
             >
               <span>
                 {key === "+1"
