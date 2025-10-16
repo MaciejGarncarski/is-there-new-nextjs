@@ -3,6 +3,7 @@ import { parseContributors } from "@/app/parse-contributors.utils";
 import { Reactions } from "@/app/reactions";
 import { TimeRelativeClient } from "@/app/time-relative-client";
 import { Release } from "@/app/types";
+import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -10,13 +11,16 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export const ReleaseList = async () => {
+  "use cache";
+  cacheLife("seconds");
+
   const [releases, latestRelease]: [Release[], Release] = await Promise.all([
-    fetch("https://api.github.com/repos/vercel/next.js/releases", {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
-    fetch("https://api.github.com/repos/vercel/next.js/releases/latest", {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
+    fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
+      res.json()
+    ),
+    fetch("https://api.github.com/repos/vercel/next.js/releases/latest").then(
+      (res) => res.json()
+    ),
   ]);
 
   return (
