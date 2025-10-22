@@ -11,8 +11,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export const ReleaseList = async () => {
-  "use cache";
-  cacheLife("seconds");
+  "use cache: remote";
+  cacheLife("minutes");
 
   const [releases, latestRelease]: [Release[], Release] = await Promise.all([
     fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
