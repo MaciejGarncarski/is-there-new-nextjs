@@ -12,7 +12,7 @@ import remarkGfm from "remark-gfm";
 
 export const ReleaseList = async () => {
   "use cache: remote";
-  cacheLife("minutes");
+  cacheLife({ expire: 60 * 5 });
 
   const [releases, latestRelease]: [Release[], Release] = await Promise.all([
     fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>
