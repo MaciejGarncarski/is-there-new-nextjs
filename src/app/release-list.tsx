@@ -3,7 +3,7 @@ import { parseContributors } from "@/app/parse-contributors.utils";
 import { Reactions } from "@/app/reactions";
 import { TimeRelativeClient } from "@/app/time-relative-client";
 import { Release } from "@/app/types";
-import { cacheLife } from "next/cache";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -11,8 +11,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export const ReleaseList = async () => {
-  "use cache: remote";
-  cacheLife({ expire: 60 * 5 });
+  await connection();
 
   const [releases, latestRelease]: [Release[], Release] = await Promise.all([
     fetch("https://api.github.com/repos/vercel/next.js/releases").then((res) =>

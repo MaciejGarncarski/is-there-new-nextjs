@@ -5,13 +5,13 @@ export function Contributors({ contributors }: { contributors: string[] }) {
     <div className="mt-4 flex flex-wrap items-center gap-4">
       <h3 className="font-semibold flex-shrink-0">Contributors:</h3>
       <ul className="flex flex-wrap gap-2">
-        {contributors.map((contributor) => {
+        {contributors.map((contributor, idx) => {
           const contributorGithubPage = `https://github.com/${contributor.slice(
             1
           )}`;
 
           return (
-            <li key={contributor} className="shrink-0">
+            <li key={contributor + idx} className="shrink-0">
               <a
                 href={contributorGithubPage}
                 target="_blank"
@@ -23,7 +23,7 @@ export function Contributors({ contributors }: { contributors: string[] }) {
                   width={28}
                   height={28}
                   alt={`Avatar of ${contributor}`}
-                  className="rounded-full border border-stone-600/70"
+                  className="rounded-full border border-stone-600/70 overflow-hidden"
                 />
               </a>
             </li>
